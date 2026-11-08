@@ -1,0 +1,24 @@
+# Dados e processamento de sinais
+pandas>=2.0
+numpy>=1.26
+scipy>=1.11
+neurokit2>=0.2.7
+datasets>=2.18          # Hugging Face
+
+# Machine learning
+scikit-learn>=1.4
+xgboost>=2.0
+joblib>=1.3
+
+# Visualização e notebooks
+matplotlib>=3.8
+seaborn>=0.13
+jupyter>=1.0
+
+# IoT e alertas
+paho-mqtt>=2.0
+python-telegram-bot>=21.0
+python-dotenv>=1.0
+
+# Dashboard
+streamlit>=1.32
