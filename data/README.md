@@ -4,14 +4,16 @@ Os dados brutos **não são versionados** no git, por causa do tamanho e das lic
 
 ## 1. WESAD (Wearable Stress and Affect Detection)
 
-- **Conteúdo:** 15 participantes com pulseira Empatica E4 (sinais BVP, EDA, TEMP, ACC) e sensor de peito (RespiBAN). Condições rotuladas: neutro, estresse e diversão.
-- **Fonte:** UCI Machine Learning Repository
-- **Licença:** uso acadêmico e não comercial
-- **Destino:** `data/raw/wesad/`
+- **Conteúdo:** 15 participantes (S2 a S17, sem o S12) com pulseira Empatica E4 (sinais BVP, EDA, TEMP, ACC) e sensor de peito (RespiBAN). Condições rotuladas: neutro, estresse e diversão.
+- **Fonte oficial:** https://ubi29.informatik.uni-siegen.de/usi/data_wesad.html (download manual do `WESAD.zip`, cerca de 2 GB compactado e 17 GB extraído)
+- **Licença:** uso acadêmico e não comercial, com citação obrigatória
+- **Citação:** SCHMIDT, P. et al. Introducing WESAD, a multimodal dataset for wearable stress and affect detection. In: *Proceedings of the 20th ACM International Conference on Multimodal Interaction (ICMI '18)*. Boulder: ACM, 2018. p. 400-408. DOI: 10.1145/3242969.3242985.
+- **Destino:** extrair o zip em `data/raw/`, gerando `data/raw/WESAD/S2/S2.pkl` etc.
 
 ## 2. wearable-and-stress (Hugging Face)
 
-- **Conteúdo:** versão do WESAD agregada por minuto (`HR_mean`, `TEMP_mean`, `MOTION_intensity`, `label`)
+- **Conteúdo:** indicadores agregados (`HR_mean`, `TEMP_mean`, `MOTION_intensity`, `label` 1 ou 2) de duas fontes. A maior parte vem do dataset de enfermeiras (`NURSE_*`: 15 pessoas, cerca de 10,7 milhões de linhas). Do WESAD há só 406 linhas (`WESAD_*`: 14 pessoas, uma linha por minuto)
+- **Uso no projeto:** secundário. O WESAD bruto é mais completo, e a parte `NURSE` pode servir de validação externa opcional
 - **Fonte:** https://huggingface.co/datasets/evannh/wearable-and-stress
 - **Destino:** `data/raw/hf_wearable_stress/`
 
@@ -23,12 +25,16 @@ Os dados brutos **não são versionados** no git, por causa do tamanho e das lic
 - **Observação:** pode exigir cadastro no IEEE DataPort. O download é manual.
 - **Destino:** `data/raw/ieee_tea/`
 
+## Verificação
+
+Depois dos downloads manuais, rode `python -m src.data.download`: o script baixa o wearable-and-stress e confere o WESAD e o dataset de TEA.
+
 ## Estrutura esperada
 
 ```
 data/
 ├── raw/
-│   ├── wesad/
+│   ├── WESAD/            # S2/ ... S17/, cada um com SX.pkl e SX_E4_Data.zip
 │   ├── hf_wearable_stress/
 │   └── ieee_tea/
 └── processed/
