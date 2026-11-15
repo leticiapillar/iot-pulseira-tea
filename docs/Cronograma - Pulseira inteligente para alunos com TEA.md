@@ -5,9 +5,14 @@
 
 > **Replanejamento em 15/11/2026: plano B ativado.** O acesso ao dataset de TEA do IEEE DataPort não foi liberado a tempo. Com isso:
 > - O dia 6 (explorar o dataset de TEA) foi **cancelado**.
-> - O experimento central (dia 9) passa a ser **validação externa**: treinar no WESAD com os sinais que os dois datasets têm em comum (frequência cardíaca, temperatura e movimento) e testar na parte `NURSE` do wearable-and-stress, sem e com ajuste ao novo público.
+> - ~~O experimento central (dia 9) passa a ser **validação externa**: treinar no WESAD com os sinais que os dois datasets têm em comum (frequência cardíaca, temperatura e movimento) e testar na parte `NURSE` do wearable-and-stress, sem e com ajuste ao novo público.~~ (substituído pelo plano C, abaixo)
 > - A aplicação em TEA passa a ser tratada como **hipótese**. Ela se apoia em Goodwin et al. (2019) e Imbiriba et al. (2023), que usaram a mesma pulseira (Empatica E4) em jovens com TEA. Essa limitação está registrada na Seção 1.5 do relatório e será retomada nas Conclusões.
 > - As fases técnicas foram empurradas 1 dia, e o dia 10 foi juntado ao dia 9. A Contextualização (dia 4) foi feita em 15/11, o que libera parte do dia 11 como folga.
+>
+> **Replanejamento em 15/11/2026 (noite): plano C ativado.** A checagem do `NURSE` mostrou que os rótulos do wearable-and-stress não são confiáveis (detalhes em `data/README.md`). Com isso:
+> - O `NURSE` **deixa de ser usado para medir desempenho**. Ele entra só na Análise e nas Limitações, como exemplo da dificuldade de rotular estresse no mundo real.
+> - O experimento central (dia 9) passa a ser **sensores completos vs. sensores de baixo custo**, todo no WESAD, com validação deixando uma pessoa de fora (LOSO). A pergunta é: quanto desempenho se perde ao trocar a pulseira de pesquisa por sensores que um ESP32 consegue ler?
+> - A aplicação em TEA continua sendo uma **hipótese**. O plano C fortalece o elo do custo, que é a lacuna central do projeto.
 
 **Legenda:** ✅ feito · ⏳ replanejado · ❌ cancelado
 
@@ -28,22 +33,22 @@
 |---|---|---|---|---|
 | 5 | ~~sex 13/11~~ **dom 15/11** | Explorar o WESAD: ler os arquivos da pulseira, ver os rótulos e fazer gráficos dos sinais em repouso vs. estresse | Notebook `01_exploracao_wesad` | ⏳ |
 | 6 | ~~sáb 14/11~~ | ~~Explorar o dataset de TEA e comparar com o WESAD~~ | ~~Notebook `02_exploracao_tea`~~ | ❌ Sem o dataset de TEA |
-| 7 | ~~dom 15/11~~ **seg 16/11** | Pré-processar o WESAD: filtrar ruído, dividir em janelas de 60 s (testar também 120 s), extrair indicadores (frequência cardíaca, HRV, picos de suor, temperatura, intensidade de movimento). Explorar rapidamente a parte `NURSE` e confirmar o significado do `label` 2 | Script de pré-processamento e dataset de indicadores | ⏳ |
+| 7 | ~~dom 15/11~~ **seg 16/11** | Pré-processar o WESAD: filtrar ruído, dividir em janelas de 60 s (testar também 120 s), extrair indicadores (frequência cardíaca, HRV, picos de suor, temperatura, intensidade de movimento), marcando cada indicador com o grupo de sensores de que depende (completo, baixo custo, GSR). ~~Checar o `NURSE`~~: feito em 15/11, levou ao plano C | Script de pré-processamento e dataset de indicadores | ⏳ |
 
 ## Fase 3: Modelagem e resultados (dias 8 a 11)
 
 | Dia | Data | Tarefas | Entrega do dia | Status |
 |---|---|---|---|---|
 | 8 | ~~seg 16/11~~ **ter 17/11** | Treinar modelos no WESAD: regressão logística (como Goodwin), LDA, Random Forest e XGBoost. Validar deixando uma pessoa de fora por vez (LOSO), para o modelo ser testado em gente que nunca viu. Comparar com Schmidt et al. (2018) | Tabela de métricas (acurácia, F1 macro, acurácia balanceada, AUROC) | ⏳ |
-| 9 | ~~ter 17/11~~ **qua 18/11** | **Experimento central (plano B):** treinar no WESAD só com frequência cardíaca, temperatura e movimento e testar na parte `NURSE`, sem e com ajuste ao novo público. Na mesma sessão, gerar os *insights*: quais sinais mais pesam na decisão e os gráficos finais | Resultado da pergunta "o modelo funciona fora do laboratório, em outras pessoas e com outro tipo de estresse?" e gráficos | ⏳ Inclui o antigo dia 10 |
+| 9 | ~~ter 17/11~~ **qua 18/11** | **Experimento central (plano C):** comparar, com LOSO no WESAD, três conjuntos de sensores: (1) completo, como na Empatica E4; (2) baixo custo: frequência cardíaca, temperatura e movimento; (3) baixo custo + EDA (sensor GSR). Na mesma sessão, gerar os *insights*: quais sinais mais pesam na decisão, desempenho por participante e gráficos finais | Resultado da pergunta "quanto se perde ao trocar a pulseira de pesquisa por sensores de baixo custo?" e gráficos | ⏳ Inclui o antigo dia 10 |
 | 10 | ~~qua 18/11~~ | Juntado ao dia 9 | — | ⏳ |
-| 11 | qui 19/11 | Escrever a **Análise de Resultados**, comparando com a literatura da Fase 1 e discutindo o que o resultado no `NURSE` sugere para o uso em TEA | Seção 4 do relatório | Meio dia livre como folga |
+| 11 | qui 19/11 | Escrever a **Análise de Resultados**, comparando com a literatura da Fase 1 e discutindo o que a comparação de sensores sugere para uma pulseira escolar de baixo custo e por que o `NURSE` não pôde ser usado | Seção 4 do relatório | Meio dia livre como folga |
 
 ## Fase 4: Arquitetura e demo (dias 12 a 14)
 
 | Dia | Data | Tarefas | Entrega do dia |
 |---|---|---|---|
-| 12 | sex 20/11 | Desenhar o diagrama da arquitetura (pulseira → MQTT → IA → dashboard e alerta) e escrever a **Arquitetura e Metodologia**, incluindo a mudança para o plano B | Diagrama e Seção 2 |
+| 12 | sex 20/11 | Desenhar o diagrama da arquitetura (pulseira → MQTT → IA → dashboard e alerta) e escrever a **Arquitetura e Metodologia**, incluindo as mudanças para os planos B e C | Diagrama e Seção 2 |
 | 13 | sáb 21/11 | Montar a demo: script que reproduz o WESAD como pulseira virtual → MQTT → modelo → alerta no Telegram | Pipeline funcionando de ponta a ponta |
 | 14 | dom 22/11 | Dashboard em Streamlit com o sinal em tempo real, o nível de agitação, os alertas e o histórico. Escrever **Desenvolvimento e Funcionalidades** | Dashboard e Seção 3 |
 
@@ -67,8 +72,7 @@
 
 ## Pontos de atenção
 
-- **O experimento central agora depende do `NURSE`.** Antes do dia 9, confirme o que significam os rótulos 1 e 2 e trate os horários repetidos (há muitos `timestamp_unix` duplicados). Se o `NURSE` não servir, o plano C é ficar só com a validação LOSO no WESAD e discutir a generalização na Análise.
-- **Os dois datasets só têm três sinais em comum:** frequência cardíaca, temperatura e movimento. O modelo do experimento central não usa o suor da pele (EDA) nem a HRV, então espere desempenho menor que o modelo completo do dia 8. Essa comparação também é um resultado.
+- **O "baixo custo" é simulado.** O plano C usa um subconjunto dos sinais da própria E4, não sensores baratos reais, que são mais ruidosos. O resultado é um teto para o hardware barato e precisa ser apresentado assim.
 - **Folga:** a folga do dia 4 já foi usada. Restam o meio dia livre do dia 11 e o dia 15, de escrita, para absorver atrasos.
 - **Escreva ao longo do caminho:** guarde gráficos e decisões em cada notebook, para o relatório quase se montar sozinho.
 
@@ -88,5 +92,5 @@ As referências completas, em ABNT, estão em `docs/referencias/fichamentos.md`.
 ## Datasets
 
 - WESAD (UCI Machine Learning Repository), dataset de detecção de estresse com pulseira Empatica E4. **Dataset principal.**
-- wearable-and-stress (Hugging Face): https://huggingface.co/datasets/evannh/wearable-and-stress. **A parte `NURSE` é a validação externa do experimento central.**
+- wearable-and-stress (Hugging Face): https://huggingface.co/datasets/evannh/wearable-and-stress. Checado em 15/11: rótulos não confiáveis, **não usado para medir desempenho** (plano C).
 - ~~Heart Rate as a Predictor of Challenging Behaviours among Children with Autism (IEEE DataPort)~~: https://ieee-dataport.org/documents/dataset-heart-rate-predictor-challenging-behaviours-among-children-autism-wearable. **Não obtido** (plano B).

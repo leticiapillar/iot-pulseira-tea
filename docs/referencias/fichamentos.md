@@ -200,6 +200,7 @@ Dados dos artigos já fichados que foram usados na Contextualização:
 - [ ] Decidir se busca uma **revisão sistemática de verdade** sobre wearables e estresse em TEA, já que o STREAM é um protocolo.
 - [ ] Confirmar ano e cidade da referência do AutiSense.
 - [x] Dataset do IEEE DataPort (TEA): não obtido. Plano B ativado (WESAD + NURSE do Hugging Face).
+- [x] NURSE (Hugging Face) checado em 15/11/2026: rótulos não confiáveis. Plano C ativado (sensores completos vs. baixo custo no WESAD). Detalhes em `data/README.md`.
 - [x] Conferir os dados do IBGE na publicação oficial (15/11/2026: todos os números conferem; referência com o link do catálogo do IBGE).
 - [x] Conferir no Inep o percentual em classes comuns (15/11/2026: Resumo Técnico 2025; o texto agora usa o dado de 2025, 96%).
 - [x] Colar na referência INEP (2026b) o link da página de download dos microdados.
