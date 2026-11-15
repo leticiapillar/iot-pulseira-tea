@@ -44,7 +44,7 @@ Desenvolver uma prova de conceito de pulseira inteligente, baseada em IoT e inte
 
 - Extrair indicadores fisiológicos (frequência cardíaca, variabilidade da frequência cardíaca, atividade eletrodérmica, temperatura da pele e intensidade de movimento) de sinais de pulseira disponíveis em bases públicas.
 - Treinar e comparar modelos de classificação de estresse (regressão logística, análise discriminante linear, Random Forest e XGBoost), avaliando-os em pessoas não vistas no treino (validação deixando um participante de fora).
-- Comparar o desempenho obtido com o conjunto completo de sinais de uma pulseira de pesquisa e com subconjuntos mensuráveis por sensores de baixo custo (frequência cardíaca, temperatura e movimento, com e sem atividade eletrodérmica), estimando quanto desempenho se perde ao reduzir o custo do hardware.
+- Comparar o desempenho obtido com conjuntos crescentes de sensores de baixo custo (só frequência cardíaca; frequência cardíaca, temperatura e movimento; e esses sinais mais a atividade eletrodérmica), estimando o que cada sensor acrescenta à detecção.
 - Implementar o fluxo completo de uma solução IoT: pulseira (virtualizada) → protocolo MQTT → serviço de inferência → alerta via Telegram e painel de acompanhamento para o professor.
 - Discutir os requisitos éticos e de proteção de dados (LGPD) envolvidos no monitoramento de dados de saúde de crianças e adolescentes.
 

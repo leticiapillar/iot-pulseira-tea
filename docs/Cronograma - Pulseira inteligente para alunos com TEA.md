@@ -11,7 +11,7 @@
 >
 > **Replanejamento em 15/11/2026 (noite): plano C ativado.** A checagem do `NURSE` mostrou que os rótulos do wearable-and-stress não são confiáveis (detalhes em `data/README.md`). Com isso:
 > - O `NURSE` **deixa de ser usado para medir desempenho**. Ele entra só na Análise e nas Limitações, como exemplo da dificuldade de rotular estresse no mundo real.
-> - O experimento central (dia 9) passa a ser **sensores completos vs. sensores de baixo custo**, todo no WESAD, com validação deixando uma pessoa de fora (LOSO). A pergunta é: quanto desempenho se perde ao trocar a pulseira de pesquisa por sensores que um ESP32 consegue ler?
+> - O experimento central (dia 9) passa a ser **comparação entre conjuntos de sensores de baixo custo** (só FC; FC + temperatura + movimento; + EDA), todo no WESAD, com validação deixando uma pessoa de fora (LOSO). A pergunta é: quanto desempenho se perde ao trocar a pulseira de pesquisa por sensores que um ESP32 consegue ler?
 > - A aplicação em TEA continua sendo uma **hipótese**. O plano C fortalece o elo do custo, que é a lacuna central do projeto.
 
 **Legenda:** ✅ feito · ⏳ replanejado · ❌ cancelado
@@ -33,14 +33,14 @@
 |---|---|---|---|---|
 | 5 | ~~sex 13/11~~ **dom 15/11** | Explorar o WESAD: ler os arquivos da pulseira, ver os rótulos e fazer gráficos dos sinais em repouso vs. estresse | Notebook `01_exploracao_wesad` | ⏳ |
 | 6 | ~~sáb 14/11~~ | ~~Explorar o dataset de TEA e comparar com o WESAD~~ | ~~Notebook `02_exploracao_tea`~~ | ❌ Sem o dataset de TEA |
-| 7 | ~~dom 15/11~~ **seg 16/11** | Pré-processar o WESAD: filtrar ruído, dividir em janelas de 60 s (testar também 120 s), extrair indicadores (frequência cardíaca, HRV, picos de suor, temperatura, intensidade de movimento), marcando cada indicador com o grupo de sensores de que depende (completo, baixo custo, GSR). ~~Checar o `NURSE`~~: feito em 15/11, levou ao plano C | Script de pré-processamento e dataset de indicadores | ⏳ |
+| 7 | ~~dom 15/11~~ **seg 16/11** (feito em 15/11) | Pré-processar o WESAD: janelas de 60 s com passo de 30 s (e versão de 120 s), indicadores de FC, temperatura, movimento e EDA (nível, picos de suor), marcados pelo conjunto de sensores. A HRV foi calculada mas excluída do experimento: no estresse ela é dominada por ruído de movimento, e nem a própria E4 consegue medi-la (ver docstring de `src/data/preprocess.py`) | `src/data/preprocess.py`, `data/processed/features_wesad.csv` (1.349 janelas, 1.015 na tarefa binária) e `features_wesad_w120_p60.csv` | ✅ |
 
 ## Fase 3: Modelagem e resultados (dias 8 a 11)
 
 | Dia | Data | Tarefas | Entrega do dia | Status |
 |---|---|---|---|---|
 | 8 | ~~seg 16/11~~ **ter 17/11** | Treinar modelos no WESAD: regressão logística (como Goodwin), LDA, Random Forest e XGBoost. Validar deixando uma pessoa de fora por vez (LOSO), para o modelo ser testado em gente que nunca viu. Comparar com Schmidt et al. (2018) | Tabela de métricas (acurácia, F1 macro, acurácia balanceada, AUROC) | ⏳ |
-| 9 | ~~ter 17/11~~ **qua 18/11** | **Experimento central (plano C):** comparar, com LOSO no WESAD, três conjuntos de sensores: (1) completo, como na Empatica E4; (2) baixo custo: frequência cardíaca, temperatura e movimento; (3) baixo custo + EDA (sensor GSR). Na mesma sessão, gerar os *insights*: quais sinais mais pesam na decisão, desempenho por participante e gráficos finais | Resultado da pergunta "quanto se perde ao trocar a pulseira de pesquisa por sensores de baixo custo?" e gráficos | ⏳ Inclui o antigo dia 10 |
+| 9 | ~~ter 17/11~~ **qua 18/11** | **Experimento central (plano C):** comparar, com LOSO no WESAD, três conjuntos de sensores: (1) só FC (só um sensor de pulso); (2) baixo custo: FC, temperatura e movimento; (3) baixo custo + EDA (sensor GSR), que equivale a todos os sensores de pulso da Empatica E4. Na mesma sessão, gerar os *insights*: quais sinais mais pesam na decisão, desempenho por participante e gráficos finais | Resultado da pergunta "quanto se perde ao trocar a pulseira de pesquisa por sensores de baixo custo?" e gráficos | ⏳ Inclui o antigo dia 10 |
 | 10 | ~~qua 18/11~~ | Juntado ao dia 9 | — | ⏳ |
 | 11 | qui 19/11 | Escrever a **Análise de Resultados**, comparando com a literatura da Fase 1 e discutindo o que a comparação de sensores sugere para uma pulseira escolar de baixo custo e por que o `NURSE` não pôde ser usado | Seção 4 do relatório | Meio dia livre como folga |
 
