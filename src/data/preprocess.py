@@ -25,9 +25,9 @@ de estresse (vazamento).
 5. Qualidade: a janela é marcada como inválida se mais de 20% dos batimentos
    forem ruído ou se houver menos de 30 batimentos válidos.
 
-A normalização por participante (z-score em relação ao baseline da própria
-pessoa) NÃO é aplicada no CSV: ela fica em `normalizar_por_baseline`, para o
-treino decidir quando usá-la. Os valores salvos são brutos, nas unidades físicas.
+A calibração por participante (diferença em relação aos primeiros 5 min de
+baseline da própria pessoa) NÃO é aplicada no CSV: ela
+fica em `normalizar_por_baseline`, para o treino decidir quando usá-la. Os valores salvos são brutos, nas unidades físicas.
 
 Observação: os filtros são aplicados ao sinal inteiro de cada participante (não
 causais). Num uso em tempo real, a filtragem teria de ser causal; isso não afeta
@@ -65,7 +65,7 @@ EDA_CORTE_HZ = 1.0
 ESTRESSE = 2
 NAO_ESTRESSE = (1, 3)               # baseline + diversão (como em Schmidt et al., 2018)
 
-COLS_ID = ["subject", "t_inicio", "label", "condicao", "estresse", "janela_valida", "frac_ruido_fc"]
+COLS_ID = ["subject", "t_inicio", "janela_s", "label", "condicao", "estresse", "janela_valida", "frac_ruido_fc"]
 
 
 def conjuntos(colunas) -> dict[str, list[str]]:
@@ -188,7 +188,7 @@ def processar_participante(subject: str, janela: float = 60, passo: float = 30) 
     for t0, lab in janelas_puras(d["TEMP"], WRIST_FS["TEMP"], janela, passo):
         feats = indicadores_janela(t0, t0 + janela, bat, eda, d["TEMP"], d["ACC"])
         linhas.append({
-            "subject": subject, "t_inicio": t0, "label": lab, "condicao": LABELS[lab],
+            "subject": subject, "t_inicio": t0, "janela_s": janela, "label": lab, "condicao": LABELS[lab],
             "estresse": 1 if lab == ESTRESSE else (0 if lab in NAO_ESTRESSE else np.nan),
             **feats,
         })
@@ -196,18 +196,39 @@ def processar_participante(subject: str, janela: float = 60, passo: float = 30) 
 
 
 # --------------------------------------------------------------------------- normalização
-def normalizar_por_baseline(df: pd.DataFrame, colunas: list[str]) -> pd.DataFrame:
-    """z-score de cada indicador em relação às janelas de baseline da mesma pessoa.
+CALIBRACAO_S = 300  # minutos iniciais de baseline usados para calibrar (5 min)
 
-    Equivale a calibrar a pulseira com alguns minutos de repouso. Usa só o
-    baseline do próprio participante, então pode ser aplicada antes da divisão
-    LOSO sem vazar informação entre pessoas.
+
+def normalizar_por_baseline(df: pd.DataFrame, colunas: list[str],
+                            calibracao_s: float = CALIBRACAO_S, modo: str = "centro") -> pd.DataFrame:
+    """Calibra cada indicador pelo início do baseline da mesma pessoa.
+
+    Simula a calibração na escola: os primeiros `calibracao_s` segundos de
+    repouso definem o nível de base da pessoa, e só o que vem DEPOIS é
+    avaliado. As janelas que começam dentro do período de calibração recebem
+    `calibracao=True` e devem ficar fora da avaliação; caso contrário, o
+    baseline seria normalizado com as próprias janelas e pareceria "perfeito".
+
+    modo="centro" (padrão): subtrai a média da calibração (diferença em relação
+        ao repouso, na unidade original).
+    modo="z": também divide pelo desvio padrão da calibração. Foi testado em
+        15/11/2026 e piorou os conjuntos de baixo custo (F1 macro de ~0,83 para
+        ~0,78): com 5 min, o desvio padrão é instável e infla os valores.
+
+    Usa só dados do próprio participante, então pode ser aplicada antes da
+    divisão LOSO sem vazar informação entre pessoas.
     """
     out = df.copy()
-    for subject, g in df.groupby("subject"):
-        base = g[g.label == 1][colunas]
-        media, dp = base.mean(), base.std().replace(0, np.nan)
-        out.loc[g.index, colunas] = (g[colunas] - media) / dp
+    out["calibracao"] = False
+    for _, g in df.groupby("subject"):
+        base = g[g.label == 1]
+        ini = base.t_inicio.min()
+        calib = base[base.t_inicio + base.janela_s <= ini + calibracao_s]
+        valores = g[colunas] - calib[colunas].mean()
+        if modo == "z":
+            valores = valores / calib[colunas].std().replace(0, np.nan)
+        out.loc[g.index, colunas] = valores
+        out.loc[base.index[base.t_inicio < ini + calibracao_s], "calibracao"] = True
     return out
 
 
