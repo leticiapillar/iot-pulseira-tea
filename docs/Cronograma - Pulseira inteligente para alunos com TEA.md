@@ -3,39 +3,47 @@
 **Período:** 09/11/2026 a 28/11/2026 (20 dias)
 **Premissas:** trabalho individual, cerca de 2 a 3 horas por dia. Os dias 1 a 15 são de desenvolvimento e os dias 16 a 20 são de revisão e gravação do vídeo.
 
+> **Replanejamento em 15/11/2026: plano B ativado.** O acesso ao dataset de TEA do IEEE DataPort não foi liberado a tempo. Com isso:
+> - O dia 6 (explorar o dataset de TEA) foi **cancelado**.
+> - O experimento central (dia 9) passa a ser **validação externa**: treinar no WESAD com os sinais que os dois datasets têm em comum (frequência cardíaca, temperatura e movimento) e testar na parte `NURSE` do wearable-and-stress, sem e com ajuste ao novo público.
+> - A aplicação em TEA passa a ser tratada como **hipótese**. Ela se apoia em Goodwin et al. (2019) e Imbiriba et al. (2023), que usaram a mesma pulseira (Empatica E4) em jovens com TEA. Essa limitação está registrada na Seção 1.5 do relatório e será retomada nas Conclusões.
+> - As fases técnicas foram empurradas 1 dia, e o dia 10 foi juntado ao dia 9. A Contextualização (dia 4) foi feita em 15/11, o que libera parte do dia 11 como folga.
+
+**Legenda:** ✅ feito · ⏳ replanejado · ❌ cancelado
+
 ---
 
 ## Fase 1: Fundamentação e dados (dias 1 a 4)
 
-| Dia | Data | Tarefas | Entrega do dia |
-|---|---|---|---|
-| 1 | seg 09/11 | Criar conta no IEEE DataPort e baixar o dataset de TEA. Baixar o WESAD (UCI) e o wearable-and-stress (Hugging Face). Criar o repositório no GitHub | Os 3 datasets baixados e o repositório criado |
-| 2 | ter 10/11 | Ler e fichar os 2 artigos de Goodwin (2019 e 2023) e a revisão sobre HRV e suor da pele em TEA | Fichamento: sinais, modelos e métricas usados |
-| 3 | qua 11/11 | Ler e fichar os projetos com ESP32 (UnB, AutiSense, Febrace) e 2 ou 3 artigos que usam o WESAD, para ter números de comparação | Tabela comparativa de trabalhos relacionados |
-| 4 | qui 12/11 | Escrever a **Contextualização** do relatório: o problema, a justificativa e a relevância (dados sobre TEA no Brasil e inclusão escolar) | Seção 1 do relatório (rascunho) |
+| Dia | Data | Tarefas | Entrega do dia | Status |
+|---|---|---|---|---|
+| 1 | seg 09/11 | Criar conta no IEEE DataPort e baixar o dataset de TEA. Baixar o WESAD (UCI) e o wearable-and-stress (Hugging Face). Criar o repositório no GitHub | 2 datasets baixados (WESAD e wearable-and-stress) e repositório criado | ✅ O dataset de TEA não foi obtido (plano B) |
+| 2 | ter 10/11 | Ler e fichar os artigos de Goodwin (2019) e Imbiriba (2023) e o protocolo STREAM (Gernert et al., PLoS ONE) | Fichamento: sinais, modelos e métricas usados | ✅ Feito em 15/11 |
+| 3 | qua 11/11 | Ler e fichar os projetos de baixo custo (UnB, AutiSense, Febrace) e 2 artigos que usam o WESAD (Schmidt 2018, Siirtola 2019) | Tabela comparativa de trabalhos relacionados | ✅ Feito em 15/11 |
+| 4 | qui 12/11 | Escrever a **Contextualização** do relatório: o problema, a justificativa e a relevância (dados sobre TEA no Brasil e inclusão escolar) | Seção 1 do relatório (rascunho) | ✅ Feito em 15/11; faltam os itens `[conferir]` |
 
 ## Fase 2: Exploração e preparação dos dados (dias 5 a 7)
 
-| Dia | Data | Tarefas | Entrega do dia |
-|---|---|---|---|
-| 5 | sex 13/11 | Explorar o WESAD: ler os arquivos da pulseira, ver os rótulos e fazer gráficos dos sinais em repouso vs. estresse | Notebook `01_exploracao_wesad` |
-| 6 | sáb 14/11 | Explorar o dataset de TEA e comparar com o WESAD: taxas de amostragem, unidades, sinais em comum | Notebook `02_exploracao_tea` |
-| 7 | dom 15/11 | Pré-processar: filtrar ruído, dividir em janelas de 30 a 60 s, extrair indicadores (frequência cardíaca, HRV, picos de suor, intensidade de movimento) | Script de pré-processamento e dataset de indicadores |
+| Dia | Data | Tarefas | Entrega do dia | Status |
+|---|---|---|---|---|
+| 5 | ~~sex 13/11~~ **dom 15/11** | Explorar o WESAD: ler os arquivos da pulseira, ver os rótulos e fazer gráficos dos sinais em repouso vs. estresse | Notebook `01_exploracao_wesad` | ⏳ |
+| 6 | ~~sáb 14/11~~ | ~~Explorar o dataset de TEA e comparar com o WESAD~~ | ~~Notebook `02_exploracao_tea`~~ | ❌ Sem o dataset de TEA |
+| 7 | ~~dom 15/11~~ **seg 16/11** | Pré-processar o WESAD: filtrar ruído, dividir em janelas de 60 s (testar também 120 s), extrair indicadores (frequência cardíaca, HRV, picos de suor, temperatura, intensidade de movimento). Explorar rapidamente a parte `NURSE` e confirmar o significado do `label` 2 | Script de pré-processamento e dataset de indicadores | ⏳ |
 
 ## Fase 3: Modelagem e resultados (dias 8 a 11)
 
-| Dia | Data | Tarefas | Entrega do dia |
-|---|---|---|---|
-| 8 | seg 16/11 | Treinar modelos no WESAD: regressão logística (como Goodwin), Random Forest e XGBoost. Validar deixando uma pessoa de fora por vez, para o modelo ser testado em gente que nunca viu | Tabela de métricas (acurácia, F1, AUROC) |
-| 9 | ter 17/11 | **Experimento central:** testar o melhor modelo no dataset de TEA, sem e com ajuste ao novo público | Resultado da pergunta "funciona em crianças com TEA?" |
-| 10 | qua 18/11 | Gerar os *insights*: quais sinais mais pesam na decisão e com quanto tempo de antecedência o alerta aparece. Fazer os gráficos finais | Gráficos e interpretação |
-| 11 | qui 19/11 | Escrever a **Análise de Resultados**, comparando com a literatura da Fase 1 | Seção 4 do relatório |
+| Dia | Data | Tarefas | Entrega do dia | Status |
+|---|---|---|---|---|
+| 8 | ~~seg 16/11~~ **ter 17/11** | Treinar modelos no WESAD: regressão logística (como Goodwin), LDA, Random Forest e XGBoost. Validar deixando uma pessoa de fora por vez (LOSO), para o modelo ser testado em gente que nunca viu. Comparar com Schmidt et al. (2018) | Tabela de métricas (acurácia, F1 macro, acurácia balanceada, AUROC) | ⏳ |
+| 9 | ~~ter 17/11~~ **qua 18/11** | **Experimento central (plano B):** treinar no WESAD só com frequência cardíaca, temperatura e movimento e testar na parte `NURSE`, sem e com ajuste ao novo público. Na mesma sessão, gerar os *insights*: quais sinais mais pesam na decisão e os gráficos finais | Resultado da pergunta "o modelo funciona fora do laboratório, em outras pessoas e com outro tipo de estresse?" e gráficos | ⏳ Inclui o antigo dia 10 |
+| 10 | ~~qua 18/11~~ | Juntado ao dia 9 | — | ⏳ |
+| 11 | qui 19/11 | Escrever a **Análise de Resultados**, comparando com a literatura da Fase 1 e discutindo o que o resultado no `NURSE` sugere para o uso em TEA | Seção 4 do relatório | Meio dia livre como folga |
 
 ## Fase 4: Arquitetura e demo (dias 12 a 14)
 
 | Dia | Data | Tarefas | Entrega do dia |
 |---|---|---|---|
-| 12 | sex 20/11 | Desenhar o diagrama da arquitetura (pulseira → MQTT → IA → dashboard e alerta) e escrever a **Arquitetura e Metodologia** | Diagrama e Seção 2 |
+| 12 | sex 20/11 | Desenhar o diagrama da arquitetura (pulseira → MQTT → IA → dashboard e alerta) e escrever a **Arquitetura e Metodologia**, incluindo a mudança para o plano B | Diagrama e Seção 2 |
 | 13 | sáb 21/11 | Montar a demo: script que reproduz o WESAD como pulseira virtual → MQTT → modelo → alerta no Telegram | Pipeline funcionando de ponta a ponta |
 | 14 | dom 22/11 | Dashboard em Streamlit com o sinal em tempo real, o nível de agitação, os alertas e o histórico. Escrever **Desenvolvimento e Funcionalidades** | Dashboard e Seção 3 |
 
@@ -43,13 +51,13 @@
 
 | Dia | Data | Tarefas | Entrega do dia |
 |---|---|---|---|
-| 15 | seg 23/11 | Escrever **Conclusões e Lições Aprendidas**, incluindo limitações, ética e LGPD. Escrever o README. Montar a primeira versão completa do relatório em PDF | Relatório v1 completo e repositório organizado |
+| 15 | seg 23/11 | Escrever **Conclusões e Lições Aprendidas**, incluindo as limitações (sem dados de TEA, sem teste com crianças), ética e LGPD. Escrever o README. Montar a primeira versão completa do relatório em PDF | Relatório v1 completo e repositório organizado |
 
 ## Revisão e vídeo (dias 16 a 20)
 
 | Dia | Data | Tarefas |
 |---|---|---|
-| 16 | ter 24/11 | Revisar o relatório: texto, referências (ABNT) e figuras |
+| 16 | ter 24/11 | Revisar o relatório: texto, referências (ABNT) e figuras. Resolver os itens `[conferir]` da Seção 1 |
 | 17 | qua 25/11 | Roteiro do pitch de 5 minutos: problema (1 min), solução (1 min), demo (2 min), resultados e impacto (1 min) |
 | 18 | qui 26/11 | Gravar a demo e a narração |
 | 19 | sex 27/11 | Editar o vídeo e testar o README do zero, como se fosse outra pessoa |
@@ -59,21 +67,26 @@
 
 ## Pontos de atenção
 
-- **Dia 1 é crítico:** o IEEE DataPort pode exigir cadastro e demorar para liberar o download. Se o dataset de TEA não sair, o plano B é usar só o WESAD e tratar a aplicação em TEA como hipótese, sustentada pelos artigos de Goodwin.
-- **Folga:** os dias 4, 11 e 15 são de escrita e absorvem atrasos das fases técnicas.
+- **O experimento central agora depende do `NURSE`.** Antes do dia 9, confirme o que significam os rótulos 1 e 2 e trate os horários repetidos (há muitos `timestamp_unix` duplicados). Se o `NURSE` não servir, o plano C é ficar só com a validação LOSO no WESAD e discutir a generalização na Análise.
+- **Os dois datasets só têm três sinais em comum:** frequência cardíaca, temperatura e movimento. O modelo do experimento central não usa o suor da pele (EDA) nem a HRV, então espere desempenho menor que o modelo completo do dia 8. Essa comparação também é um resultado.
+- **Folga:** a folga do dia 4 já foi usada. Restam o meio dia livre do dia 11 e o dia 15, de escrita, para absorver atrasos.
 - **Escreva ao longo do caminho:** guarde gráficos e decisões em cada notebook, para o relatório quase se montar sozinho.
 
 ## Referências principais
 
 - Goodwin et al. (2019). *Predicting aggression to others in youth with autism using a wearable biosensor*. Autism Research. https://zendy.io/title/10.1002/aur.2151
 - Imbiriba, Demirkaya, Singh, Erdogmus & Goodwin (2023). *Wearable Biosensing to Predict Imminent Aggressive Behavior in Psychiatric Inpatient Youths With Autism*. JAMA Network Open. https://pesquisa.bvsalud.org/sms/resource/pt/mdl-38127348
-- Revisão sobre monitoramento de estresse por wearables em TEA (PLoS ONE). https://doaj.org/article/5b48ae0d92704c078729119a53a97657
+- Gernert et al. Protocolo do estudo STREAM sobre monitoramento de estresse por wearables em TEA (PLoS ONE). https://doaj.org/article/5b48ae0d92704c078729119a53a97657
+- Schmidt et al. (2018). *Introducing WESAD, a multimodal dataset for wearable stress and affect detection*. ICMI '18.
+- Siirtola (2019). Detecção de estresse com sensores de pulso usando o WESAD.
 - Monteiro, K. R. (2022). Dissertação de mestrado, UnB. https://repositorio.unb.br/bitstream/10482/44757/1/2022_KlausRibeiroMonteiro.pdf
 - AutiSense: Smart Assistant System for Children with ASD (PPU). https://scholar.ppu.edu/handle/123456789/9458
 - Pulseira para identificação de crises (Febrace). https://virtual.febrace.org.br/2023/ENG/2017/poster
 
+As referências completas, em ABNT, estão em `docs/referencias/fichamentos.md`.
+
 ## Datasets
 
-- WESAD (UCI Machine Learning Repository), dataset de detecção de estresse com pulseira Empatica E4.
-- wearable-and-stress (Hugging Face): https://huggingface.co/datasets/evannh/wearable-and-stress
-- Heart Rate as a Predictor of Challenging Behaviours among Children with Autism (IEEE DataPort): https://ieee-dataport.org/documents/dataset-heart-rate-predictor-challenging-behaviours-among-children-autism-wearable
+- WESAD (UCI Machine Learning Repository), dataset de detecção de estresse com pulseira Empatica E4. **Dataset principal.**
+- wearable-and-stress (Hugging Face): https://huggingface.co/datasets/evannh/wearable-and-stress. **A parte `NURSE` é a validação externa do experimento central.**
+- ~~Heart Rate as a Predictor of Challenging Behaviours among Children with Autism (IEEE DataPort)~~: https://ieee-dataport.org/documents/dataset-heart-rate-predictor-challenging-behaviours-among-children-autism-wearable. **Não obtido** (plano B).

@@ -13,7 +13,8 @@ Os dados brutos **não são versionados** no git, por causa do tamanho e das lic
 ## 2. wearable-and-stress (Hugging Face)
 
 - **Conteúdo:** indicadores agregados (`HR_mean`, `TEMP_mean`, `MOTION_intensity`, `label` 1 ou 2) de duas fontes. A maior parte vem do dataset de enfermeiras (`NURSE_*`: 15 pessoas, cerca de 10,7 milhões de linhas). Do WESAD há só 406 linhas (`WESAD_*`: 14 pessoas, uma linha por minuto)
-- **Uso no projeto:** secundário. O WESAD bruto é mais completo, e a parte `NURSE` pode servir de validação externa opcional
+- **Uso no projeto:** a parte `NURSE` é a **validação externa** do experimento central (plano B): o modelo treinado no WESAD com `HR`, `TEMP` e movimento é testado nela. As linhas `WESAD_*` não são usadas, porque o WESAD bruto é mais completo
+- **A confirmar:** o significado dos rótulos 1 e 2 e o tratamento dos `timestamp_unix` duplicados
 - **Fonte:** https://huggingface.co/datasets/evannh/wearable-and-stress
 - **Destino:** `data/raw/hf_wearable_stress/`
 
@@ -23,6 +24,7 @@ Os dados brutos **não são versionados** no git, por causa do tamanho e das lic
 - **Fonte:** https://ieee-dataport.org/documents/dataset-heart-rate-predictor-challenging-behaviours-among-children-autism-wearable
 - **DOI:** 10.21227/5b7r-8j60
 - **Observação:** pode exigir cadastro no IEEE DataPort. O download é manual.
+- **Situação (15/11/2026):** **não obtido**, porque o acesso não foi liberado a tempo. O projeto segue o plano B (ver o cronograma em `docs/`), e a pasta `ieee_tea/` fica vazia.
 - **Destino:** `data/raw/ieee_tea/`
 
 ## Verificação
@@ -36,8 +38,8 @@ data/
 ├── raw/
 │   ├── WESAD/            # S2/ ... S17/, cada um com SX.pkl e SX_E4_Data.zip
 │   ├── hf_wearable_stress/
-│   └── ieee_tea/
+│   └── ieee_tea/         # vazio (plano B)
 └── processed/
     ├── features_wesad.csv
-    └── features_tea.csv
+    └── features_nurse.csv
 ```
