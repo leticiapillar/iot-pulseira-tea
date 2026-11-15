@@ -161,13 +161,44 @@ Extraídos da literatura acima, para justificar as escolhas do `src/data/preproc
 
 ---
 
+## Fontes da Contextualização (dados do Brasil, prevalência e legislação)
+
+Fontes consultadas em 15/11/2026 para a Seção 1 do relatório ([01_contextualizacao.md](../relatorio/01_contextualizacao.md)). Os números vieram de **notícias** e precisam ser conferidos nos documentos oficiais antes da versão final.
+
+| Fonte | Dado usado | Status | Link |
+|---|---|---|---|
+| IBGE, Censo 2022 (Agência IBGE Notícias, 23/05/2025) | 2,4 milhões de pessoas com diagnóstico de TEA (1,2% da população); 1,5% dos homens e 0,9% das mulheres; maior proporção em meninos de 5 a 9 anos (3,8%) | Conferir na tabela oficial | https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/43464 |
+| Canaltech (repercussão do Censo 2022) | Mesmos dados do IBGE, que reporta como resultado preliminar da amostra | Fonte secundária | https://canaltech.com.br/saude/ibge-brasil-calcula-pela-1a-vez-o-total-de-pessoas-diagnosticadas-com-autismo/ |
+| Extra Classe (abr. 2025), com base no Censo Escolar 2024 (MEC/Inep) | Matrículas de alunos com TEA: 636.202 (2023) → 918.877 (2024), +44,4% | Conferir no Inep e citar o Inep diretamente | https://www.extraclasse.org.br/educacao/2025/04/matriculas-de-estudantes-com-autistas-cresceram-444-em-um-ano/ |
+| TVT News, com base no Censo Escolar 2024 | 95,7% dos alunos da educação especial (4–17 anos) em classes comuns em 2024 (93,2% em 2020). O número é de **toda** a educação especial, não só do TEA | Conferir no Inep | https://tvtnews.com.br/?p=745650 |
+| CDC, ADDM Network (MMWR, 15/04/2025) | Prevalência de 1 em 31 crianças de 8 anos nos EUA (32,2 por 1.000), contra 1 em 36 no relatório anterior | Conferir referência completa no MMWR | https://sites.rutgers.edu/rucares/cdc-releases-updated-prevalence-of-asd-diagnoses/ |
+| Lei nº 12.764/2012 (Lei Berenice Piana) | Política Nacional de Proteção dos Direitos da Pessoa com TEA; a pessoa com TEA é considerada pessoa com deficiência | Ok | https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12764.htm |
+| Lei nº 13.146/2015 (Lei Brasileira de Inclusão) | Garante o sistema educacional inclusivo | Ok | https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm |
+| Lei nº 13.709/2018 (LGPD), arts. 11 e 14 | Dados de saúde como dados sensíveis e tratamento de dados de crianças e adolescentes (para a seção de ética, dia 15) | Ok | https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm |
+
+Dados dos artigos já fichados que foram usados na Contextualização:
+
+| Dado | Fonte |
+|---|---|
+| ~90% das crianças com TEA têm percepção sensorial atípica | Gernert et al. (2024), p. 2 |
+| Comportamentos agressivos em até 80% das crianças com TEA; 30–40% minimamente verbais; prevalência de 1 em 36 | Imbiriba et al. (2023), p. 2 |
+| A agressão ocorre sem aviso e cria uma barreira de acesso à educação | Goodwin et al. (2019), p. 2 |
+| 60 s de aviso já bastam para intervir | Goodwin et al. (2019), p. 7 |
+| Preço do E4: US$ 1.690 | Monteiro (2022), p. 20 |
+| E4 descontinuado | AutiSense (2026), p. 22 |
+| Aprovação ética: 1º parecer em jan. 2020 e aprovação final em jan. 2022 (cerca de 2 anos) | Monteiro (2022), p. 43–44 |
+
+---
+
 ## Pendências
 
 - [ ] Conferir os números da tabela de referência nas páginas indicadas.
 - [ ] Reescrever o campo "O que uso no meu trabalho" com suas palavras.
 - [ ] Decidir se busca uma **revisão sistemática de verdade** sobre wearables e estresse em TEA, já que o STREAM é um protocolo.
 - [ ] Confirmar ano e cidade da referência do AutiSense.
-- [ ] Dataset do IEEE DataPort (TEA): ainda não baixado.
+- [x] Dataset do IEEE DataPort (TEA): não obtido. Plano B ativado (WESAD + NURSE do Hugging Face).
+- [ ] Conferir os dados do IBGE e do Inep nos documentos oficiais e substituir as notícias pela fonte primária.
+- [ ] Completar a referência ABNT do relatório do CDC (autores, volume, páginas).
 
 ---
 
