@@ -195,7 +195,8 @@ Dados dos artigos já fichados que foram usados na Contextualização:
 
 ## Pendências
 
-- [ ] Conferir os números da tabela de referência nas páginas indicadas.
+- [x] Conferir os números da tabela de referência nas páginas indicadas (16/11/2026: Schmidt, Tab. 4, p. 7; Siirtola, Tab. 3, p. 3, e Tab. 4, p. 4; todos conferem).
+- [x] Hosseini et al. (2022) conferido no texto completo (PMC9159985): os rótulos vêm de episódios detectados por um modelo e validados pelas enfermeiras no fim do turno (até 6 por turno); os períodos sem rótulo não são confirmados como calmos.
 - [ ] Reescrever o campo "O que uso no meu trabalho" com suas palavras.
 - [ ] Decidir se busca uma **revisão sistemática de verdade** sobre wearables e estresse em TEA, já que o STREAM é um protocolo.
 - [ ] Confirmar ano e cidade da referência do AutiSense.
