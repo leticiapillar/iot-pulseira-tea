@@ -1,8 +1,8 @@
-"""Pulseira virtual: reproduz o WESAD (ou o dataset de TEA) como se fosse
-a pulseira ESP32, publicando leituras no broker MQTT.
+"""Pulseira virtual: reproduz os sinais de pulso do WESAD como se fosse
+a pulseira ESP32, publicando um pacote por segundo no broker MQTT.
 
-Tópico: escola/sala1/pulseira/<id_aluno>
-Formato da mensagem: veja firmware/README.md
+Tópico: escola/sala1/aluno/<id>/sinais (QoS 0)
+Formato da mensagem: Seção 2.3 do relatório (docs/relatorio/02_arquitetura_metodologia.md)
 
 Cronograma: dia 13
 """

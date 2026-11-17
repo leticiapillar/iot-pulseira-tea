@@ -1,6 +1,8 @@
-"""Serviço de inferência: assina o tópico MQTT da pulseira, monta janelas
-de sinais, roda o modelo e dispara alertas quando o nível de agitação
-ultrapassa o limiar.
+"""Serviço de inferência: assina escola/sala1/aluno/+/sinais, mantém um buffer
+de 60 s por aluno, calibra nos primeiros 5 min, calcula os 18 indicadores a
+cada 30 s, roda o modelo e publica em escola/sala1/aluno/<id>/agitacao (retida)
+e, pela regra de 2 janelas seguidas >= 0,5, em escola/sala1/alertas (QoS 1).
+Contrato das mensagens: Seção 2.3 do relatório.
 
 Cronograma: dia 13
 """

@@ -46,11 +46,11 @@
 
 ## Fase 4: Arquitetura e demo (dias 12 a 14)
 
-| Dia | Data | Tarefas | Entrega do dia |
-|---|---|---|---|
-| 12 | sex 20/11 | Desenhar o diagrama da arquitetura (pulseira → MQTT → IA → dashboard e alerta) e escrever a **Arquitetura e Metodologia**, incluindo as mudanças para os planos B e C | Diagrama e Seção 2 |
-| 13 | sáb 21/11 | Montar a demo: script que reproduz o WESAD como pulseira virtual → MQTT → modelo → alerta no Telegram | Pipeline funcionando de ponta a ponta |
-| 14 | dom 22/11 | Dashboard em Streamlit com o sinal em tempo real, o nível de agitação, os alertas e o histórico. Escrever **Desenvolvimento e Funcionalidades** | Dashboard e Seção 3 |
+| Dia | Data | Tarefas | Entrega do dia | Status |
+|---|---|---|---|---|
+| 12 | sex 20/11 (feito em 17/11) | Desenhar o diagrama da arquitetura (pulseira → MQTT → IA → dashboard e alerta) e escrever a **Arquitetura e Metodologia**, incluindo as mudanças para os planos B e C | `docs/arquitetura/arquitetura.png` e rascunho da Seção 2 (`docs/relatorio/02_arquitetura_metodologia.md`), com o contrato MQTT da demo | ✅ Falta reescrever com suas palavras |
+| 13 | sáb 21/11 | Montar a demo: script que reproduz o WESAD como pulseira virtual → MQTT → modelo → alerta no Telegram | Pipeline funcionando de ponta a ponta | ⏳ |
+| 14 | dom 22/11 | Dashboard em Streamlit com o sinal em tempo real, o nível de agitação, os alertas e o histórico. Escrever **Desenvolvimento e Funcionalidades** | Dashboard e Seção 3 | ⏳ |
 
 ## Fase 5: Fechamento (dia 15)
 
