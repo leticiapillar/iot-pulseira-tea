@@ -29,7 +29,8 @@ foco é F1 macro, acurácia balanceada e AUROC.
 Uso:
     python -m src.models.train                          # todos os modelos e conjuntos
     python -m src.models.train --features data/processed/features_wesad_w120_p60.csv
-    python -m src.models.train --salvar rf baixo_custo  # salva o modelo final (todos os dados)
+    python -m src.models.train --salvar rf baixo_custo_eda  # modelo final (todos os dados)
+    python -m src.models.train --salvar rf baixo_custo_eda --excluir S8 S10 S15  # modelo da demo
 Saída: results/metrics/loso_<nome>.csv (resumo) e loso_<nome>_por_participante.csv;
        models/modelo_estresse.joblib (com --salvar)
 
@@ -147,16 +148,29 @@ def avaliar_tudo(df: pd.DataFrame, sets: dict[str, list[str]],
     return pd.DataFrame(resumo), pd.concat(por_part, ignore_index=True), previsoes
 
 
-def salvar_modelo(df: pd.DataFrame, sets: dict, nome_modelo: str, conjunto: str, normalizado: bool) -> Path:
-    """Treina com todos os participantes e salva o pipeline para a demo IoT."""
+def salvar_modelo(df: pd.DataFrame, sets: dict, nome_modelo: str, conjunto: str, normalizado: bool,
+                  excluir: list[str] | None = None) -> Path:
+    """Treina e salva o pipeline para a demo IoT.
+
+    Sem `excluir`, usa todos os participantes (models/modelo_estresse.joblib).
+    Com `excluir`, deixa esses participantes de fora do treino
+    (models/modelo_demo_sem_<ids>.joblib): a demo reproduz justamente esses
+    participantes como alunos, e o modelo nunca os viu, como no LOSO.
+    """
+    excluir = sorted(excluir or [], key=lambda s: int(s[1:]))
+    if excluir:
+        df = df[~df.subject.isin(excluir)]
     cols = sets[conjunto]
     y = df.estresse.to_numpy()
     modelo = modelos((y == 0).sum() / (y == 1).sum())[nome_modelo]
     modelo.fit(df[cols].to_numpy(), y)
     MODELS_DIR.mkdir(parents=True, exist_ok=True)
-    caminho = MODELS_DIR / "modelo_estresse.joblib"
+    nome = f"modelo_demo_sem_{'_'.join(excluir)}.joblib" if excluir else "modelo_estresse.joblib"
+    caminho = MODELS_DIR / nome
     joblib.dump({"modelo": modelo, "indicadores": cols, "conjunto": conjunto,
-                 "nome_modelo": nome_modelo, "normalizado_por_baseline": normalizado}, caminho)
+                 "nome_modelo": nome_modelo, "normalizado_por_baseline": normalizado,
+                 "participantes_treino": sorted(df.subject.unique(), key=lambda s: int(s[1:])),
+                 "participantes_excluidos": excluir}, caminho)
     return caminho
 
 
@@ -167,6 +181,8 @@ def main() -> None:
     ap.add_argument("--modelos", nargs="+", default=["maioria", "lr", "lda", "rf", "xgb"])
     ap.add_argument("--salvar", nargs=2, metavar=("MODELO", "CONJUNTO"),
                     help="treina com todos os dados e salva em models/")
+    ap.add_argument("--excluir", nargs="+", metavar="SX",
+                    help="com --salvar: deixa esses participantes fora do treino (modelo da demo)")
     args = ap.parse_args()
 
     normalizar = not args.sem_normalizacao
@@ -175,7 +191,7 @@ def main() -> None:
           f"{100 * df.estresse.mean():.1f}% estresse | calibração por baseline: {normalizar}")
 
     if args.salvar:
-        caminho = salvar_modelo(df, sets, *args.salvar, normalizar)
+        caminho = salvar_modelo(df, sets, *args.salvar, normalizar, excluir=args.excluir)
         print(f"modelo salvo em {caminho.relative_to(ROOT)}")
         return
 

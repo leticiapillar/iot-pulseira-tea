@@ -14,6 +14,9 @@ data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
+# Histórico gerado pela demo (probabilidades e alertas)
+data/demo/
+
 # Mosquitto
 mosquitto/data/
 mosquitto/log/

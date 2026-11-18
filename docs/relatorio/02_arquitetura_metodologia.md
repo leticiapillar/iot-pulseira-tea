@@ -73,6 +73,8 @@ Os níveis de QoS (qualidade de serviço do MQTT) foram escolhidos assim:
  "acc": [[x, y, z], ... 32 amostras]}
 ```
 
+Na pulseira virtual, as mensagens trazem também o campo `rotulo`, com a condição do protocolo do WESAD, para o painel mostrar a "verdade" durante a demonstração. O serviço de inferência não usa esse campo.
+
 Cada pacote tem cerca de 1,4 KB. Uma sala com 30 alunos gera cerca de 45 KB/s, uma carga pequena para uma rede Wi-Fi.
 
 **Mensagem de agitação** (serviço → painel):
@@ -105,6 +107,8 @@ O **serviço de inferência** (`src/iot/inference_service.py`) assina os sinais 
    - publica um alerta de início quando **duas janelas seguidas** têm probabilidade ≥ 0,5;
    - publica um alerta de fim quando duas janelas seguidas ficam abaixo de 0,5;
    - não publica novos alertas para o mesmo episódio.
+
+Se a pulseira ficar mais de 5 s sem enviar dados (pacotes perdidos, bateria, Wi-Fi), o serviço esvazia o buffer e só volta a decidir depois de 60 s de sinal contínuo, para não misturar trechos diferentes na mesma janela. A calibração é mantida.
 
 A regra de 2 janelas seguidas foi escolhida na simulação de uso (Seção 4.5). Ela custa cerca de 30 s a mais de latência e reduz os alarmes falsos.
 
@@ -184,7 +188,7 @@ Um classificador que sempre responde a classe mais frequente serve de referênci
 - o modelo é treinado com 14 participantes e testado no 15º;
 - o processo é repetido para cada participante.
 
-Esse esquema simula o uso da pulseira em um aluno novo, que o modelo nunca viu. É mais rigoroso que a validação cruzada comum, em que janelas da mesma pessoa podem estar no treino e no teste.
+Esse esquema simula o uso da pulseira em um aluno novo, que o modelo nunca viu. Pelo mesmo motivo, o modelo usado na demonstração foi treinado **sem** os três participantes que a demonstração reproduz como alunos (S8, S10 e S15). É mais rigoroso que a validação cruzada comum, em que janelas da mesma pessoa podem estar no treino e no teste.
 
 **Métricas.** No WESAD, um classificador que sempre responde "não estresse" acerta cerca de 66% das janelas, e por isso a acurácia sozinha engana. As métricas principais são:
 - **F1 macro:** média do F1 das duas classes;
