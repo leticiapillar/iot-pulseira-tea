@@ -41,6 +41,10 @@ def nivel(prob: float | None) -> str | None:
     return "baixo" if prob < LIMIAR else ("moderado" if prob < 0.8 else "alto")
 
 
+def _arred(x, casas: int) -> float | None:
+    return None if x is None or not np.isfinite(x) else round(float(x), casas)
+
+
 class Aluno:
     """Estado de uma pulseira: buffer de sinais, calibração e regra de alerta."""
 
@@ -103,9 +107,12 @@ class Aluno:
             estado = "monitorando" if prob is not None else "sinal_ruim"
 
         saida = []
-        agit = {"aluno": self.aluno, "t": t_fim, "estado": estado,
+        agit = {"aluno": self.aluno, "t": t_fim, "sessao": self.t_inicio, "estado": estado,
                 "prob": None if prob is None else round(prob, 3), "nivel": nivel(prob),
-                "janela_valida": bool(f["janela_valida"])}
+                "janela_valida": bool(f["janela_valida"]),
+                # resumo da janela para o painel (indicadores, não sinais brutos)
+                "fc": _arred(f.get("bc__fc_media"), 0), "eda": _arred(f.get("gsr__eda_media"), 2),
+                "temp": _arred(f.get("bc__temp_media"), 1)}
         if rotulo is not None:
             agit["rotulo"] = rotulo                            # só na demo (pulseira virtual)
         saida.append((topico_agitacao(self.aluno), agit, 0, True))
@@ -118,7 +125,8 @@ class Aluno:
             elif self.em_episodio and self.abaixo >= JANELAS_SEGUIDAS:
                 self.em_episodio, tipo = False, "fim"
             if tipo:
-                alerta = {"aluno": self.aluno, "t": t_fim, "tipo": tipo, "prob": round(prob, 3),
+                alerta = {"aluno": self.aluno, "t": t_fim, "sessao": self.t_inicio, "tipo": tipo,
+                          "prob": round(prob, 3),
                           "nivel": nivel(prob)}
                 if rotulo is not None:
                     alerta["rotulo"] = rotulo
@@ -135,13 +143,20 @@ class Aluno:
 class Historico:
     """Guarda em CSV só as saídas do modelo (nunca os sinais brutos)."""
 
-    CAMPOS = {"agitacao": ["aluno", "t", "estado", "prob", "nivel", "janela_valida", "rotulo"],
-              "alertas": ["aluno", "t", "tipo", "prob", "nivel", "rotulo"]}
+    CAMPOS = {"agitacao": ["aluno", "sessao", "t", "estado", "prob", "nivel", "janela_valida",
+                           "fc", "eda", "temp", "rotulo"],
+              "alertas": ["aluno", "sessao", "t", "tipo", "prob", "nivel", "rotulo"]}
 
     def __init__(self, pasta: Path = HIST_DIR):
         pasta.mkdir(parents=True, exist_ok=True)
         self.arquivos = {k: pasta / f"{k}.csv" for k in self.CAMPOS}
         self.lock = threading.Lock()
+        for tipo, arq in self.arquivos.items():  # arquivo de uma versão anterior: guarda à parte
+            if arq.exists():
+                with arq.open() as f:
+                    cabecalho = f.readline().strip().split(",")
+                if cabecalho != self.CAMPOS[tipo]:
+                    arq.rename(arq.with_name(f"{tipo}_{int(arq.stat().st_mtime)}_antigo.csv"))
 
     def gravar(self, tipo: str, msg: dict) -> None:
         arq = self.arquivos[tipo]

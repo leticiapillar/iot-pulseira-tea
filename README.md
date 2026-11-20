@@ -89,17 +89,19 @@ python -m src.iot.inference_service
 # 3. Alertas no Telegram (sem token no .env, mostra no terminal a mensagem que enviaria)
 python -m src.iot.telegram_alert
 
-# 4. Pulseiras virtuais (reproduzem participantes do WESAD como alunos)
+# 4. Painel do professor (abre em http://localhost:8501)
+streamlit run dashboard/app.py
+
+# 5. Pulseiras virtuais (reproduzem participantes do WESAD como alunos)
 python -m src.iot.virtual_wristband --aluno aluno01 --velocidade 10           # sessão completa (~10 min)
 python -m src.iot.virtual_wristband --aluno aluno02 --velocidade 20 --curta   # calibração + estresse (~1,5 min)
-
-# 5. Painel do professor (dia 14)
-streamlit run dashboard/app.py
 ```
 
 **Modelo da demo.** O serviço usa `models/modelo_demo_sem_S8_S10_S15.joblib`, treinado **sem** os três participantes que a demo reproduz (aluno01 = S10, aluno02 = S15, aluno03 = S8). Assim, a demo mostra a pulseira em pessoas que o modelo nunca viu. Para recriá-lo: `python -m src.models.train --salvar rf baixo_custo_eda --excluir S8 S10 S15`.
 
 **Calibração.** Os primeiros 5 minutos de cada pulseira são de repouso e servem de calibração: só depois deles o serviço começa a estimar o estresse.
+
+**Painel.** Mostra um cartão por aluno (nível de agitação, probabilidade, episódio em andamento) e quatro abas: a probabilidade ao longo da sessão, a lista de alertas, os horários de maior agitação e os sinais ao vivo (para conferir a colocação da pulseira). O histórico vem de `data/demo/*.csv`, gravado pelo serviço de inferência, e pode ser apagado a qualquer momento para começar do zero. Na demo, a opção "Mostrar a condição do WESAD" exibe a fase do protocolo, para comparar com a estimativa.
 
 **Telegram.** Crie um bot com o @BotFather, coloque o token em `TELEGRAM_BOT_TOKEN` no `.env`, mande uma mensagem ao bot e rode `python -m src.iot.telegram_alert --descobrir-chat` para obter o `TELEGRAM_CHAT_ID`. Teste com `python -m src.iot.telegram_alert --teste`.
 
