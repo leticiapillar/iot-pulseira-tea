@@ -1,26 +1,6 @@
 # Fichamentos e trabalhos relacionados
 
-> **Status:** rascunho preenchido com apoio de IA a partir dos PDFs em `docs/referencias/artigos/` (não versionados).
-> Os números de página (**p.**) referem-se à **página do arquivo PDF**, não à numeração impressa. Conferir os números principais antes de usá-los no relatório.
-> O campo "O que uso no meu trabalho" é uma **sugestão**: reescrever com suas palavras.
-
-## Tabela comparativa
-
-| Trabalho | Ano | Público | Sensores / sinais | Modelo de IA | Validação | Resultado principal | Link |
-|---|---|---|---|---|---|---|---|
-| Goodwin et al. (Autism Research) | 2019 | 20 jovens com TEA, 6–17 anos, internação psiquiátrica | Empatica E4: BVP/IBI, EDA, ACC | Regressão logística com regularização ridge | 5-fold CV repetida 5× (não deixa o sujeito de fora) | AUC 0,71 (modelo global) e 0,84 (modelos por pessoa), prevendo agressão **1 min antes** com 3 min de dados | https://zendy.io/title/10.1002/aur.2151 |
-| Imbiriba et al. (JAMA Netw. Open) | 2023 | 70 jovens com TEA analisados (86 inscritos), 5–19 anos, 4 hospitais | Empatica E4: BVP, EDA, ACC | Regressão logística, SVM, rede neural, adaptação de domínio | Divisão por sessão (80/20) e CV deixando indivíduos de fora | Regressão logística: AUROC 0,80 **3 min antes** (divisão por sessão); 0,77 deixando indivíduos de fora | https://pesquisa.bvsalud.org/sms/resource/pt/mdl-38127348 |
-| Schmidt et al. (WESAD, ICMI) | 2018 | 15 adultos saudáveis (laboratório, TSST) | E4 no pulso: BVP, EDA, TEMP, ACC; RespiBAN no peito | DT, RF, AdaBoost, LDA, kNN | **LOSO** | Binário, só pulso (fisiológicos): **acurácia 88,3% / F1 86,1%** (RF). Melhor geral: 93,1% (peito, LDA) | https://www.eti.uni-siegen.de/ubicomp/papers/ubi_icmi2018.pdf |
-| Siirtola (UbiComp/ISWC Adjunct) | 2019 | WESAD (15 adultos), só E4 do pulso | ACC, EDA, TEMP, BVP, HR | LDA, QDA, RF | **LOSO** | **Acurácia balanceada 87,4%** com TEMP+BVP+HR, sem EDA (LDA, janela de 120 s) | https://urn.fi/URN:NBN:fi-fe2019121648252 |
-| Monteiro (Dissertação UnB) | 2022 | 10 adultos saudáveis (simulação) + 1 adolescente autista | Luva + pulseira: GSR (Grove), ECG (AD8232), termistor, MPU6050; **Arduino Nano**, nRF24L01+, Raspberry Pi 3 | Índice de *meltdown* por limiares ponderados (sem aprendizado de máquina) | Teste funcional (crise simulada e *Cold Pressor Test*) | 90% (simulação) e 100% (CPT) de detecção; nenhuma crise real observada | https://repositorio.unb.br/bitstream/10482/44757/1/2022_KlausRibeiroMonteiro.pdf |
-| AutiSense (TCC PPU) | 2025–26 | Crianças com TEA (público-alvo); testes em cenários controlados | **ESP32-C3**, MAX30102 (dedo), Grove GSR, MPU6050 | Limiares relativos à linha de base pessoal + classificação de movimento (repouso, atividade, *stimming*) | Testes de unidade e integração com cenários roteirizados | Classificou corretamente os 5 cenários; alerta via Telegram | https://scholar.ppu.edu/handle/123456789/9458 |
-| Pulseira Febrace (ETE Henrique Lage) | 2023 | Autistas (público-alvo); sem teste com usuários | Sensor de batimento (dedo), DHT11 (umidade como suor), módulo transceptor | Limiar fixo (BPM > 100; umidade > 80%) | Testes de bancada | Sensores de batimento **instáveis com movimento** e ruins no pulso; alcance de 50 m | https://virtual.febrace.org.br/2023/ENG/2017/poster |
-| Gernert et al. (STREAM, PLoS ONE) | 2024 | 20 adultos com TEA + 20 controles (planejado) | Pulseira: HR, HRV, EDA; faixa de EEG para sono | **Não se aplica**: é um protocolo de estudo, sem resultados | — | Define os indicadores de HR, HRV e EDA e o manejo de dados (GDPR) | https://doaj.org/article/5b48ae0d92704c078729119a53a97657 |
-
-> ⚠️ **Correções em relação à versão anterior da tabela:**
-> - O trabalho da PLoS ONE **não é uma revisão**. É o *protocolo* do estudo STREAM, ainda sem resultados. Se você precisar de uma revisão de verdade sobre wearables e estresse em TEA, é preciso buscar outra.
-> - Só o AutiSense usa **ESP32**. A UnB usa Arduino Nano e a Febrace não nomeia o microcontrolador no pôster.
-> - Imbiriba: os 0,80 de AUROC vêm da divisão por sessão. Na validação que deixa indivíduos de fora, a mais comparável à sua, o valor é 0,77.
+> 📚 **Fontes de referência:** a tabela comparativa dos trabalhos (público, sensores, modelo de IA, validação, resultado e link), a lista dos PDFs, as bases de dados do Inep e as referências completas em ABNT estão em [`artigos.md`](artigos.md).
 
 ---
 
@@ -197,9 +177,9 @@ Dados dos artigos já fichados que foram usados na Contextualização:
 
 - [x] Conferir os números da tabela de referência nas páginas indicadas (16/11/2026: Schmidt, Tab. 4, p. 7; Siirtola, Tab. 3, p. 3, e Tab. 4, p. 4; todos conferem).
 - [x] Hosseini et al. (2022) conferido no texto completo (PMC9159985): os rótulos vêm de episódios detectados por um modelo e validados pelas enfermeiras no fim do turno (até 6 por turno); os períodos sem rótulo não são confirmados como calmos.
-- [ ] Reescrever o campo "O que uso no meu trabalho" com suas palavras.
-- [ ] Decidir se busca uma **revisão sistemática de verdade** sobre wearables e estresse em TEA, já que o STREAM é um protocolo.
-- [ ] Confirmar ano e cidade da referência do AutiSense.
+wearables e estresse em TEA, já que o STREAM é um protocolo.
+- [x] Confirmar ano e cidade da referência do AutiSense (20/11/2026: capa com "2025-2026" e declaração datada de 15/01/2026, então o ano 2026 está certo. O PDF não informa a cidade; a Palestine Polytechnic University fica em Hebron, então a referência se mantém).
+- [x] Conferir no AutiSense o limite de 30 s entre alertas citado na Seção 3 (20/11/2026: "A 30-second cooldown interval is enforced between consecutive alerts to prevent notification flooding", p. 50 do PDF, seção do bot do Telegram).
 - [x] Dataset do IEEE DataPort (TEA): não obtido. Plano B ativado (WESAD + NURSE do Hugging Face).
 - [x] NURSE (Hugging Face) checado em 15/11/2026: rótulos não confiáveis. Plano C ativado (sensores completos vs. baixo custo no WESAD). Detalhes em `data/README.md`.
 - [x] Conferir os dados do IBGE na publicação oficial (15/11/2026: todos os números conferem; referência com o link do catálogo do IBGE).

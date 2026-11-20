@@ -30,5 +30,7 @@ mosquitto/log/
 docs/referencias/artigos/*.pdf
 
 # Microdados do Inep (grandes; baixar do portal do Inep)
-docs/referencias/microdados_censo_escolar_*/
-docs/referencias/Sinopse_Estatistica_da_Educa*/
+docs/referencias/dados/
+
+# HTML intermediário do relatório (caminhos locais); o PDF é versionado
+docs/relatorio/relatorio.html

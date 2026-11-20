@@ -1,7 +1,5 @@
-> **Rascunho gerado com apoio de IA em 19/11/2026.**
 > - Os números do teste (3.7) vêm de `data/demo/agitacao.csv` e `data/demo/alertas.csv`, gerados no teste de 19/11 (modelo da demo, sem S8, S10 e S15).
 > - As figuras 3.2 a 3.5 são capturas **provisórias** desse teste. Trocar pelas capturas feitas na gravação do vídeo.
-> - **Reescrever com suas palavras e apagar este aviso.**
 
 # 3 Desenvolvimento e Funcionalidades
 

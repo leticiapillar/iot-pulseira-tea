@@ -1,7 +1,6 @@
 > **Rascunho gerado com apoio de IA em 17/11/2026.**
 > - Os números da metodologia vêm de `src/data/preprocess.py`, `src/models/train.py` e `data/processed/features_wesad.csv`.
 > - O formato das mensagens MQTT (2.3) é o **contrato da demonstração** do dia 13: se ele mudar na implementação, atualizar aqui.
-> - **Reescrever com suas palavras e apagar este aviso.**
 
 # 2 Arquitetura e Metodologia
 
