@@ -54,9 +54,9 @@
 
 ## Fase 5: Fechamento (dia 15)
 
-| Dia | Data | Tarefas | Entrega do dia |
-|---|---|---|---|
-| 15 | seg 23/11 | Escrever **Conclusões e Lições Aprendidas**, incluindo as limitações (sem dados de TEA, sem teste com crianças), ética e LGPD. Escrever o README. Montar a primeira versão completa do relatório em PDF | Relatório v1 completo e repositório organizado |
+| Dia | Data | Tarefas | Entrega do dia | Status |
+|---|---|---|---|---|
+| 15 | seg 23/11 (feito em 19/11) | Escrever **Conclusões e Lições Aprendidas**, incluindo as limitações (sem dados de TEA, sem teste com crianças), ética e LGPD. Escrever o README. Montar a primeira versão completa do relatório em PDF | Relatório v1 completo e repositório organizado | ✅ Rascunho da Seção 5 (`docs/relatorio/05_conclusoes.md`), README completo e `docs/relatorio/relatorio.pdf` (v1, montado por `montar_relatorio.py`). Falta reescrever as Seções 2 a 5 com suas palavras |
 
 ## Revisão e vídeo (dias 16 a 20)
 
