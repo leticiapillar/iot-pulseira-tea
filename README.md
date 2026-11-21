@@ -4,8 +4,8 @@
 
 Trabalho final da disciplina **Internet das Coisas e Aplicações de IA (Big Data)**, Unisinos, 2026.
 
-- 📄 **Relatório técnico:** [docs/relatorio/relatorio_iot_pulseira_tea.pdf](docs/relatorio/relatorio_iot_pulseira_tea.pdf) (versão em Word: [.docx](docs/relatorio/relatorio_iot_pulseira_tea.docx))
-- 🎥 **Vídeo pitch e demo:** _[link a adicionar]_
+- 📄 **Relatório técnico:** [docs/relatorio/relatorio_iot_pulseira_tea.pdf](docs/relatorio/relatorio_iot_pulseira_tea.pdf)
+- 🎥 **Vídeo pitch e demo:** [docs/video/video-apresentacao.mp4](docs/video/video-apresentacao.mp4)
 
 ---
 
